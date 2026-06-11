@@ -37,7 +37,7 @@ jobs:
           go-version: '1.26'
 
       - name: Install registry-cli
-        run: go install github.com/sirosfoundation/registry-cli/cmd/registry-cli@v0.9.9
+        run: go install github.com/sirosfoundation/registry-cli/cmd/registry-cli@v0.11.0
 
       - name: Build site
         run: |

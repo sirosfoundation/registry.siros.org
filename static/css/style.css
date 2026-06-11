@@ -142,6 +142,11 @@ a:hover {
 /* Main */
 main {
     min-height: calc(100vh - 200px);
+    padding-top: 80px; /* clear fixed header on non-hero pages */
+}
+
+/* Hero pages: hero extends behind the fixed header — no top padding needed */
+main:has(.hero) {
     padding-top: 0;
 }
 

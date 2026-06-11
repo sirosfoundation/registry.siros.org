@@ -362,6 +362,8 @@ main:has(.hero) {
     transition: box-shadow 0.2s, transform 0.2s;
     text-decoration: none;
     color: inherit;
+    overflow: hidden;
+    min-width: 0;
 }
 
 .vctm-card:hover {
@@ -393,6 +395,11 @@ main:has(.hero) {
 
 .vctm-meta dd {
     margin: 0 0 0.5rem;
+}
+
+.vctm-meta dd code {
+    word-break: break-all;
+    overflow-wrap: anywhere;
 }
 
 /* Buttons */

@@ -34,7 +34,14 @@ A description of the credential.
 - `given_name` (string): Given name [mandatory]
 - `family_name` (string): Family name [mandatory]
 - `email` (string): Email address
+- `address` (object): Postal address
+    - `street` (string): Street address
+    - `city` (string): City
 ```
+
+Claims can be nested using Markdown sub-lists — use `(object)` for structured data and `(array)` for repeating items. See the [nested claims documentation](https://developers.siros.org/docs/sirosid/registry/registry-cli#nested-claims) for details.
+
+To generate only specific output formats, add `formats:` to the front matter (e.g. `formats: sd-jwt, w3c`). See [per-credential format override](https://developers.siros.org/docs/sirosid/registry/registry-cli#per-credential-formats).
 
 See [Markdown Format](../docs/markdown-format.html) for the full authoring guide.
 

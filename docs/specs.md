@@ -8,7 +8,7 @@ The registry site is built by [registry-cli](https://github.com/sirosfoundation/
 
 ### Build Pipeline
 
-1. **Source Resolution** — `sources.yaml` declares repositories via GitHub topic autodiscovery (`github:topic/vctm?org=...`) and explicit git URLs (`git:https://...`)
+1. **Source Resolution** — `sources.yaml` declares repositories via GitHub topic autodiscovery (`github:topic/vctm?org=...`) and explicit git URLs (`git:https://...`). Sources can optionally specify a `path` to restrict scanning to a subfolder (see [path targeting](https://developers.siros.org/docs/sirosid/registry/registry-cli#path-targeting)).
 2. **Repository Cloning** — Each source repository is cloned (shallow, default branch from `sources.yaml`)
 3. **Credential Detection** — The tool scans for `schema-meta.yaml`, `.vctm.json`, `.mdoc.json`, `.vc.json` files and Markdown files with `vct:` front matter
 4. **Markdown Conversion** — Markdown credential files are converted to metadata JSON by registry-cli's built-in credential conversion library (no external binary required)

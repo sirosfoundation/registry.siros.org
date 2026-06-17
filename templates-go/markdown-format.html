@@ -80,6 +80,7 @@ A verifiable credential for identity verification.
                             <tr><td><code>text_color</code></td><td>Text color for credential display (hex)</td></tr>
                             <tr><td><code>extends</code></td><td>URI of another VCT that this type extends</td></tr>
                             <tr><td><code>doctype</code></td><td>mso_mdoc document type identifier</td></tr>
+                            <tr><td><code>formats</code></td><td>Comma-separated list of output formats to generate (e.g. <code>sd-jwt, w3c</code>). When omitted, all formats are generated. Aliases: <code>vctm</code>/<code>sd-jwt</code>/<code>sdjwt</code>, <code>mddl</code>/<code>mdoc</code>/<code>mso_mdoc</code>, <code>w3c</code>/<code>jwt_vc_json</code></td></tr>
                         </tbody>
                     </table>
                 </section>
@@ -115,6 +116,43 @@ A verifiable credential for identity verification.
 
 # Mandatory claim with selective disclosure
 - `personal_id` "Personal ID" (string): Unique identifier [mandatory] [sd=always]</code></pre>
+
+                    <h3>Nested Claims</h3>
+                    <p>
+                        Claims that contain sub-fields (objects) or repeated items (arrays) are
+                        expressed using Markdown sub-lists. Use <code>(object)</code> for structured
+                        data and <code>(array)</code> for repeating items:
+                    </p>
+                    <pre><code>- `address` (object): Postal address [mandatory]
+    - `street` (string): Street address [mandatory]
+    - `city` (string): City [mandatory]
+    - `postal_code` (string): Postal code
+    - `country` (string): Country code
+- `previous_addresses` (array): Previous addresses
+    - `street` (string): Street address
+    - `city` (string): City</code></pre>
+                    <p>
+                        Each output format represents nested claims appropriately:
+                    </p>
+                    <table class="docs-table">
+                        <thead>
+                            <tr><th>Container</th><th>VCTM (SD-JWT)</th><th>mDOC (MDDL)</th><th>W3C (JSON Schema)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>object</code></td>
+                                <td>Nested paths, e.g. <code>["address", "street"]</code></td>
+                                <td>Dot-notation, e.g. <code>address.street</code></td>
+                                <td>Nested <code>properties</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>array</code></td>
+                                <td>Paths with <code>null</code> index, e.g. <code>["previous_addresses", null, "city"]</code></td>
+                                <td>Dot-notation, e.g. <code>previous_addresses.city</code></td>
+                                <td><code>items</code> schema with <code>properties</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </section>
 
                 <section class="docs-section">
@@ -136,6 +174,17 @@ A verifiable credential for identity verification.
                         <li><strong>mso_mdoc Configuration</strong> (<code>.mdoc.json</code>)</li>
                         <li><strong>W3C VCDM 2.0 Schema</strong> (<code>.vc.json</code>)</li>
                     </ul>
+                    <p>
+                        To generate only specific formats for a credential, add <code>formats</code>
+                        to the front matter:
+                    </p>
+                    <pre><code>---
+vct: https://example.com/credentials/identity
+formats: sd-jwt, w3c
+---</code></pre>
+                    <p>
+                        When <code>formats</code> is omitted, all three formats are generated.
+                    </p>
                 </section>
 
                 <section class="docs-section">

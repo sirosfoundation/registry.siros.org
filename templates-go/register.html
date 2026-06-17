@@ -87,12 +87,16 @@
 
   # Or with an explicit organization label:
   - url: "git:https://your-git-host.example/repo.git"
-    organization: "Your Org Name"</code></pre>
+    organization: "Your Org Name"
+
+  # Restrict to a subfolder (useful for monorepos):
+  - url: "git:https://github.com/your-org/monorepo.git"
+    path: "credentials/production"</code></pre>
                 </section>
 
                 <section class="docs-section">
                     <h2>Repository Structure</h2>
-                    <p>Your repository should contain credential files at the top level:</p>
+                    <p>Your repository should contain credential files at the top level (or in a subfolder if you use the <code>path</code> option in <code>sources.yaml</code>):</p>
                     <pre><code>your-credentials/
 ├── identity.md                  # Markdown credential definition
 ├── identity.schema-meta.yaml    # TS11 metadata (optional but recommended)
@@ -104,7 +108,9 @@
                         If you provide Markdown files with <code>vct:</code> front matter, the
                         registry will automatically generate the <code>.vctm.json</code>,
                         <code>.mdoc.json</code>, and <code>.vc.json</code> files — no external
-                        tools or GitHub Actions required.
+                        tools or GitHub Actions required. You can also restrict which formats
+                        are generated per credential using the <code>formats</code>
+                        <a href="/docs/markdown-format.html">front matter field</a>.
                     </p>
                 </section>
 

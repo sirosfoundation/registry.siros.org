@@ -29,7 +29,7 @@ For each repository, registry-cli looks for:
 
 - **`schema-meta.yaml`** files — TS11 SchemaMeta envelopes declaring attestation level of security, binding type, and rulebook
 - **`.vctm.json`** / **`.mdoc.json`** / **`.vc.json`** files — credential metadata in SD-JWT VC, mso_mdoc, and W3C VC formats
-- **Markdown credential files** with `vct:` front matter — automatically converted to metadata by registry-cli (no external tool needed)
+- **Markdown credential files** with `vct:` front matter — automatically converted to metadata by registry-cli (no external tool needed). Supports [nested object/array claims](https://developers.siros.org/docs/sirosid/registry/registry-cli#nested-claims) via sub-lists and [per-credential format override](https://developers.siros.org/docs/sirosid/registry/registry-cli#per-credential-formats) via `formats:` front matter.
 
 ## URL Structure
 
@@ -66,7 +66,13 @@ sources:
   # With organization label
   - url: "git:https://github.com/example/creds.git"
     organization: "Example Org"
+
+  # Restrict to a subfolder (monorepo support)
+  - url: "git:https://github.com/example/monorepo.git"
+    path: "credentials/production"
 ```
+
+See the [sources configuration reference](https://developers.siros.org/docs/sirosid/registry/registry-cli#path-targeting) for details on subfolder path targeting.
 
 ## Development
 

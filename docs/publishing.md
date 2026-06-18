@@ -8,7 +8,7 @@ When `registry-cli build` processes a source repository, it:
 
 1. Clones the repository (main branch)
 2. Scans for Markdown files with `vct:` YAML front matter
-3. Converts them to credential metadata in all supported formats (`.vctm.json`, `.mdoc.json`, `.vc.json`)
+3. Converts them to credential metadata in all supported formats (`.vctm.json`, `.mdoc.json`, `.vc.json`, `.schema.json`)
 4. Detects `schema-meta.yaml` files for TS11 compliance metadata
 5. Aggregates everything into the registry site in a single sweep
 
@@ -40,7 +40,7 @@ See [Markdown Format](../docs/markdown-format.html) for the full authoring guide
 
 ### 2. Pre-built metadata files
 
-Place `.vctm.json`, `.mdoc.json`, `.vc.json` files directly in the repository. These are used as-is without conversion.
+Place `.vctm.json`, `.mdoc.json`, `.vc.json`, `.schema.json` files directly in the repository. These are used as-is without conversion.
 
 ## Normalization
 

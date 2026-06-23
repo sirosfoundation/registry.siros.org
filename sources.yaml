@@ -14,3 +14,5 @@ sources:
     branch: vctm
   - url: "git:https://github.com/leifj/vctm-template.git"
     branch: vctm
+  - url: "git:https://github.com/webuild-consortium/webuild-attestation-rulebooks-catalog.git"
+    path: "vctm"

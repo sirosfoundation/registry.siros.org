@@ -14,3 +14,11 @@ sources:
     branch: vctm
   - url: "git:https://github.com/leifj/vctm-template.git"
     branch: vctm
+
+  # EUDI-style rulebook catalog (uses rulebook-catalog layout plugin)
+  - url: "git:https://github.com/webuild-consortium/webuild-attestation-rulebooks-catalog.git"
+    organization: "webuild-consortium"
+    layout: "rulebook-catalog"
+    options:
+      attestation_los: "iso_18045_high"
+      binding_type: "key"

@@ -44,8 +44,10 @@ https://registry.siros.org/<org>/<slug>.vc.json
 The TS11 API is at:
 
 ```
-https://registry.siros.org/api/v1/schemas.json       # All TS11-compliant schemas
-https://registry.siros.org/api/v1/schemas/<id>.json   # Individual schema
+https://registry.siros.org/api/v1/schemas.json             # All TS11-compliant schemas
+https://registry.siros.org/api/v1/schemas/<id>.json         # Individual schema
+https://registry.siros.org/api/v1/orgs.json                 # Organization index (SIROS extension, not TS11)
+https://registry.siros.org/api/v1/orgs/<org>/schemas.json   # Schemas for one org (SIROS extension, not TS11)
 ```
 
 ## Configuration

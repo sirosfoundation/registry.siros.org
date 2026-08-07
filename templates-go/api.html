@@ -41,6 +41,21 @@
             <p>Returns a single <code>SchemaMeta</code> object by UUID.</p>
             <pre><code>curl {{.BaseURL}}/api/v1/schemas/{uuid}.json</code></pre>
 
+            <h2>GET /orgs <em>(SIROS extension — not part of TS11)</em></h2>
+            <p>Not part of TS11 — the ETSI spec has no "organization" concept. Returns an index of the
+            organizations contributing to this registry, each with a link to its organization-scoped
+            schema list.</p>
+            <pre><code>curl {{.BaseURL}}/api/v1/orgs.json</code></pre>
+
+            <h2>GET /orgs/{org}/schemas <em>(SIROS extension — not part of TS11)</em></h2>
+            <p>Also not part of TS11. Returns the same shape as <code>GET /schemas</code>, filtered to
+            TS11-compliant schemas contributed by one organization. Each schema object is identical to
+            the one returned by the global list — filtering happens by which resource you request, not
+            by a new field on <code>SchemaMeta</code>, so this has no effect on TS11 conformance.</p>
+            <pre><code>curl {{.BaseURL}}/api/v1/orgs/{org}/schemas.json</code></pre>
+            <p>To filter to a <em>set</em> of organizations, fetch each organization's list separately
+            and merge client-side — there's no static resource for an arbitrary combination of orgs.</p>
+
             <h2>GET /attributes</h2>
             <p>Returns the Catalogue of Attributes — a cross-cutting index of all claims defined
             across registered credentials (per TS11 §4.2).</p>

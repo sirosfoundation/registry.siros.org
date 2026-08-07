@@ -24,6 +24,8 @@ https://registry.siros.org/<org>/<slug>.mdoc.json      # mso_mdoc configuration
 https://registry.siros.org/<org>/<slug>.vc.json        # W3C VC schema
 https://registry.siros.org/api/v1/schemas.json         # TS11 catalogue API
 https://registry.siros.org/api/v1/schemas/<id>.json    # Individual schema
+https://registry.siros.org/api/v1/orgs.json             # Organization index (SIROS extension, not TS11)
+https://registry.siros.org/api/v1/orgs/<org>/schemas.json  # Schemas for one org (SIROS extension, not TS11)
 https://registry.siros.org/catalog.jsonld              # DCAT-AP catalogue
 ```
 

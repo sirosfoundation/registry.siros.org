@@ -108,6 +108,10 @@ dist/
       schemas/
         <uuid>.jwt                         # GET /schemas/{schemaId} (JWS-signed)
         <uuid>.json                        # unsigned JSON (convenience, non-normative)
+      orgs.json                            # GET /orgs (SIROS extension, §4.3b)
+      orgs/
+        <org>/
+          schemas.jwt                      # GET /orgs/{org}/schemas (SIROS extension, §4.3b)
       .well-known/
         jwks.json                          # JWKS for signature verification
   <org>/
@@ -137,16 +141,30 @@ A JWS compact serialization containing a JWT payload conforming to `SignedSchema
 }
 ```
 
-Since this is a static file, **filtering and pagination are not server-side**. Two approaches:
+Since this is a static file, **filtering and pagination are not server-side** for the global list. Two approaches:
 
 - **Option A (recommended for now):** Serve the full list. The catalogue is expected to remain small enough (hundreds, not millions) that a single response is practical. Clients filter locally.
-- **Option B (future):** Generate pre-computed filtered views at build time for common query patterns (e.g. `schemas-by-format-dc+sd-jwt.jwt`), referenced via a custom `Link` header or index file.
+- **Option B (implemented for organization filtering, §4.3b):** Generate pre-computed filtered views at build time for a common query pattern. Other dimensions (e.g. by format) can follow the same approach if a real need arises.
 
 ### 4.3 GET /schemas/{schemaId}
 
 **Static file:** `api/v1/schemas/<uuid>.jwt`
 
 A JWS compact serialization containing the single `SchemaMeta` object.
+
+### 4.3b GET /orgs and GET /orgs/{org}/schemas — organization filtering (SIROS extension)
+
+**Static files:** `api/v1/orgs.json`, `api/v1/orgs/<org>/schemas.json` (+ `.jwt` when signing is enabled)
+
+**Not part of TS11** — the spec has no "organization" concept, and `SchemaMeta`'s JSON Schema (Annex A.2) sets `additionalProperties: false` at the top level, so adding an org/repo field directly to the object would break TS11 conformance validation for every credential. Filtering is instead expressed as a **separate resource collection**: `/orgs/{org}/schemas` returns the exact same `PaginatedSchemaList` shape as the global list, containing only that organization's TS11-compliant schemas — each item byte-for-byte identical to (and as TS11-conformant as) the one served from `/schemas`. This works identically on static GitHub Pages hosting and on `registry-cli serve` (the org-scoped files are written by `build` and served as static files either way).
+
+`/orgs.json` is an index of every organization known to this registry instance (including ones with zero TS11-compliant schemas, for discoverability), each with `name`, `schemaCount`, and `schemasURL`.
+
+There is intentionally no static resource for an arbitrary *set* of organizations — clients wanting several orgs fetch each one's list and merge client-side. A curated, named "collection" (a fixed set of orgs declared in `sources.yaml`) could follow the same static-file pattern if a real recurring need shows up; not built speculatively.
+
+Repo-level filtering (as opposed to organization) was considered and deferred: every current `sources.yaml` entry maps one organization to one source repo, so it would add a second dimension with no actual distinction in the data yet. Add it later, following the same pattern, if an org ever spans multiple repos.
+
+A live query-parameter filter (`?organization=`) on `registry-cli serve` was also considered — it's a smaller change (an in-memory index in `pkg/apihandler`, never touching the `SchemaMeta` shape either) but was deferred since it only benefits self-hosted deployments; `registry.siros.org` itself is static and can't serve it live without an additional edge-function layer.
 
 ### 4.4 Write operations
 
@@ -332,7 +350,7 @@ The existing credential detail pages (`/<org>/<slug>.html`) gain a new section/t
 |--------|--------|
 | `PUT /schemas/{schemaId}` | Git PRs serve as the write mechanism |
 | `DELETE /schemas/{schemaId}` | Removing a credential = removing files from the repo |
-| Server-side query filtering | Static site; clients filter the full list |
+| Server-side query filtering (`?attestationLoS=`, etc.) on the *static* site | `registry.siros.org` is static; clients filter the full list. (`registry-cli serve` — a live, self-hosted mode added after this document was written — does support these as real query-parameter filters via `pkg/apihandler`, for anyone who runs it.) |
 | Pagination with `limit`/`offset` | Full list served; catalogue is small |
 | Catalogue of Attributes (TS11 §2) | Deferred to Phase 5. Read-only approach viable; see §11 for design. |
 | Runtime JWS signing | Build-time signing is sufficient for a read-only catalogue |

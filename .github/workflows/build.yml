@@ -74,7 +74,6 @@ jobs:
   keepalive:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
-    needs: deploy
     permissions:
       actions: write
     steps:

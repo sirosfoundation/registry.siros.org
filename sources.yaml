@@ -22,3 +22,79 @@ sources:
     options:
       attestation_los: "iso_18045_high"
       binding_type: "key"
+    credentials:
+      # The plugin reads selective disclosure out of each schema property's
+      # description, which is the only machine-readable place the catalogue
+      # states it. EBWOID states it nowhere in the schema: the rule is in the
+      # rulebook prose only ("Attributes of the EBWOID SHALL NOT be
+      # selectively disclosable", rb-ebwoid 5.1, traceability row
+      # EW-DM-12-034), so without this the published metadata falls back to
+      # the SD-JWT VC default of "allowed" and says the opposite.
+      #
+      # Only credentials whose rulebook fixes a policy the schema does not
+      # state belong here. EUCC is deliberately absent: its rulebook allows
+      # selective disclosure of company attributes, so the default is already
+      # right.
+      ebwoid:
+        disclosure:
+          default: never
+
+      # rb-vat-id 5.1 states disclosure per claim, in a prose table the schema
+      # does not mirror. Its legend reads MUST = "SHALL be selectively
+      # disclosable" and MUST NOT = "SHALL NOT be selectively disclosable, it
+      # is always present in plain text".
+      #
+      # Three rows in that table name paths the schema does not have, and one
+      # marks a parent not disclosable while its own sub-attributes are
+      # disclosable, which cannot both hold; both are filed as
+      # webuild-consortium/webuild-attestation-rulebooks-catalog#333. Only the
+      # unambiguous rows are transcribed here.
+      vat-id:
+        disclosure:
+          claims:
+            administrative_unit.vat_id: never
+            administrative_unit.name: never
+            administrative_unit.validity_period: never
+            administrative_unit.economic_operator: never
+            administrative_unit.registered_eu_cross_border_transactions: never
+            administrative_unit.organisation_type: always
+            administrative_unit.address: always
+            administrative_unit.economic_activity: always
+            issuer.vat_id_authentic_source: never
+            issuer.authentic_source_country: never
+            issuer.location_status: never
+            attestation_legal_category: never
+            trust_anchor: never
+
+      # rb-eInvoice 5, Disclosable column.
+      eInvoice:
+        disclosure:
+          claims:
+            attestation_legal_category: never
+            invoicePayloadHash: never
+            precedingInvoiceReference: never
+            invoiceLifecycleStatus: never
+            cryptographically_bound_to: never
+            # "MUST, issuer SHALL make selectively disclosable so payment
+            # details can be withheld where not required".
+            paymentInstructions: always
+
+      # rb-e-receipt 3, Disclosable column. The rulebook also requires the
+      # Type Metadata Document to carry this (4.1): "the Type Metadata
+      # Document SHALL include Claim Selective Disclosure Metadata that
+      # matches the Disclosable column".
+      e-receipt:
+        disclosure:
+          claims:
+            attestation_legal_category: never
+            verifications: never
+            type: always
+            receipt_number: always
+            receipt_timestamp: always
+            currency_iso_code: always
+            total_price_exc_vat: always
+            total_vat_amount: always
+            total_price_inc_vat: always
+            products: always
+            vats: always
+            payments: always

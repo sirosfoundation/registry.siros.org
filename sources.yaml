@@ -22,3 +22,19 @@ sources:
     options:
       attestation_los: "iso_18045_high"
       binding_type: "key"
+    credentials:
+      # The plugin reads selective disclosure out of each schema property's
+      # description, which is the only machine-readable place the catalogue
+      # states it. EBWOID states it nowhere in the schema: the rule is in the
+      # rulebook prose only ("Attributes of the EBWOID SHALL NOT be
+      # selectively disclosable", rb-ebwoid 5.1, traceability row
+      # EW-DM-12-034), so without this the published metadata falls back to
+      # the SD-JWT VC default of "allowed" and says the opposite.
+      #
+      # Only credentials whose rulebook fixes a policy the schema does not
+      # state belong here. EUCC is deliberately absent: its rulebook allows
+      # selective disclosure of company attributes, so the default is already
+      # right.
+      ebwoid:
+        disclosure:
+          default: never
